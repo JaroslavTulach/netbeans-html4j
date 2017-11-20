@@ -3,3 +3,4 @@
 *.orig
 */nb-configuration.xml
 
+/examples/jsonparse/target/

@@ -1,7 +1,7 @@
 package org.apidesign.demo.jsonparse;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +30,8 @@ final class RepositoryCntrl {
 
 public final class ParseJSON {
     public static void main(String... args) throws Exception {
-        URL url = initializeURL(args);
-        
         List<RepositoryInfo> repositories = new ArrayList<>();
-        try (InputStream is = url != null ? url.openStream() : System.in) {
+        try (InputStream is = initializeStream(args)) {
             Models.parse(CONTEXT, RepositoryInfo.class, is, repositories);
         }
         
@@ -43,7 +41,7 @@ public final class ParseJSON {
         });
     }
 
-    private static URL initializeURL(String[] args) throws MalformedURLException {
+    private static InputStream initializeStream(String[] args) throws IOException {
         URL url;
         if (args.length == 0) {
             try {
@@ -52,16 +50,16 @@ public final class ParseJSON {
                 System.err.println("Unsupported https scheme (" + t.getMessage() + "), Try parsing from stdin:");
                 System.err.println("$ curl https://api.github.com/users/jersey/repos | ./target/jsonparse -");
                 System.exit(1);
-                url = null;
+                throw t;
             }
         } else {
             if ("-".equals(args[0])) {
-                url = null;
+                return System.in;
             } else {
                 url = new URL(args[0]);
             }
         }
-        return url;
+        return url.openStream();
     }
 
     private static final BrwsrCtx CONTEXT;

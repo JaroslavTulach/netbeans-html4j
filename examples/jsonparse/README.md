@@ -36,7 +36,7 @@ the parsing of the result.
 ## How does this work?
 
 The parsing code is in a single class [ParseJSON](https://github.com/JaroslavTulach/incubator-netbeans-html4j/blob/examples/examples/jsonparse/src/main/java/org/apidesign/demo/jsonparse/ParseJSON.java).
-First of all it defines structure of the JSON document:
+First of all it defines (potentially simplified) structure of the JSON document:
 ```java
 @Model(className="RepositoryInfo", properties = {
     @Property(name = "id", type = int.class),
@@ -56,7 +56,7 @@ and then it uses the generated `RepositoryInfo` and `Owner` classes to parse
 the provide input stream and pick certain information up while doing that:
 ```java
 List<RepositoryInfo> repositories = new ArrayList<>();
-try (InputStream is = url != null ? url.openStream() : System.in) {
+try (InputStream is = initializeStream(args)) {
     Models.parse(CONTEXT, RepositoryInfo.class, is, repositories);
 }
 
@@ -65,7 +65,8 @@ repositories.stream().filter((repo) -> repo != null && repo.getOwner() != null).
     System.err.println("repository " + repo.getName() + " is owned by " + repo.getOwner().getLogin());
 });
 ```
-Few lines of code. Parsing of JSON documents in Java has never been easier.
+Few lines of code and all the information is ready in your hands in a type-safe
+way.
 
 ## Going **Native**!
 
