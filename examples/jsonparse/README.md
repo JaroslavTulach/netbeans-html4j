@@ -33,6 +33,40 @@ $ JAVA_HOME=/path/graalvm mvn package exec:java
 The sample program connects to GitHub API and prints informations obtained from
 the parsing of the result.
 
+## How does this work?
+
+The parsing code is in a single class [ParseJSON](https://github.com/JaroslavTulach/incubator-netbeans-html4j/blob/examples/examples/jsonparse/src/main/java/org/apidesign/demo/jsonparse/ParseJSON.java).
+First of all it defines structure of the JSON document:
+```java
+@Model(className="RepositoryInfo", properties = {
+    @Property(name = "id", type = int.class),
+    @Property(name = "name", type = String.class),
+    @Property(name = "owner", type = Owner.class),
+    @Property(name = "private", type = boolean.class),
+})
+final class RepositoryCntrl {
+    @Model(className = "Owner", properties = {
+        @Property(name = "login", type = String.class)
+    })
+    static final class OwnerCntrl {
+    }
+}
+```
+and then it uses the generated `RepositoryInfo` and `Owner` classes to parse
+the provide input stream and pick certain information up while doing that:
+```java
+List<RepositoryInfo> repositories = new ArrayList<>();
+try (InputStream is = url != null ? url.openStream() : System.in) {
+    Models.parse(CONTEXT, RepositoryInfo.class, is, repositories);
+}
+
+System.err.println("there is " + repositories.size() + " repositories");
+repositories.stream().filter((repo) -> repo != null && repo.getOwner() != null).forEach((repo) -> {
+    System.err.println("repository " + repo.getName() + " is owned by " + repo.getOwner().getLogin());
+});
+```
+Few lines of code. Parsing of JSON documents in Java has never been easier.
+
 ## Going **Native**!
 
 Now it is time to go native and compile your sample Java application into
