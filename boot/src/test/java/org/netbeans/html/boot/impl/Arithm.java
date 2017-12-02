@@ -42,4 +42,13 @@ public class Arithm {
         }
         return sumInts(copy);
     }
+
+    public boolean any(boolean[] arr) {
+        for (boolean b : arr) {
+            if (b) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

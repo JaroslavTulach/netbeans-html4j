@@ -94,6 +94,18 @@ public class JsMethods {
         return sumArr(new Arithm());
     }
 
+    @JavaScriptBody(args = { "r", "a", "b" }, javacall = true, body =
+        "var array = new Array();\n"
+      + "array[0]=a;\n"
+      + "array[1]=b;\n"
+      + "return r.@org.netbeans.html.boot.impl.Arithm::any([Z)(array);\n"
+    )
+    private static native boolean any(Arithm r, boolean a, boolean b);
+
+    public static boolean any(boolean a, boolean b) {
+        return any(new Arithm(), a, b);
+    }
+
     @JavaScriptBody(args = { "x", "y" }, body = "return mul(x, y);")
     public static native int useExternalMul(int x, int y);
     

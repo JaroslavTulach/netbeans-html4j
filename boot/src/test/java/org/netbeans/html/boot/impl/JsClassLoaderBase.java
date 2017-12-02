@@ -271,4 +271,16 @@ public class JsClassLoaderBase {
         assertEquals(res, 3, "The right value");
     }
 
+   @Test public void any() throws Throwable {
+        Method st = methodClass.getMethod("any", boolean.class, boolean.class);
+        java.lang.Object res = st.invoke(null, false, false);
+        assertEquals(res, false, "no true found");
+        java.lang.Object res2 = st.invoke(null, false, true);
+        assertEquals(res2, true, "The right value");
+        java.lang.Object res3 = st.invoke(null, true, false);
+        assertEquals(res3, true, "The right value");
+        java.lang.Object res4 = st.invoke(null, true, true);
+        assertEquals(res4, true, "The right value");
+    }
+
 }

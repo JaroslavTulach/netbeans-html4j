@@ -434,7 +434,7 @@ public final class JavaScriptProcesor extends AbstractProcessor {
                         case BOOLEAN:
                             type = "boolean";
                             cast = "java.lang.Boolean";
-                            call = "booleanValue()";
+                            call = "booleanValue";
                             break;
                         case BYTE:
                             type = "byte";
