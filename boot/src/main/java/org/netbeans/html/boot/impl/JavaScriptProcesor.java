@@ -475,7 +475,7 @@ public final class JavaScriptProcesor extends AbstractProcessor {
                             throw new IllegalStateException("Unknown type: " + elem);
                     }
                     convert.append("      java.lang.Object[] orig = (java.lang.Object[])arg").append(cnt).append(";\n");
-                    convert.append("      ").append(type).append("[] copy = new ").append(type).append("[orig.length];");
+                    convert.append("      ").append(type).append("[] copy = new ").append(type).append("[orig.length];\n");
                     convert.append("      for (int i = 0; i < orig.length; i++) {\n");
                     convert.append("        copy[i] = ((").append(cast).append(")orig[i]).").append(call).append("();\n");
                     convert.append("      }\n");
