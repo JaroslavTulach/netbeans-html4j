@@ -425,6 +425,62 @@ public final class JavaScriptProcesor extends AbstractProcessor {
                 convert.append("      arg").append(cnt).
                         append(" = ((org.netbeans.html.boot.spi.Fn.FromJavaScript)p).toJava(arg").append(cnt).
                         append(");\n");
+                TypeMirror elem;
+                if (t.getKind() == TypeKind.ARRAY && (elem = ((ArrayType)t).getComponentType()).getKind().isPrimitive()) {
+                    String type;
+                    String cast;
+                    String call;
+                    switch (elem.getKind()) {
+                        case BOOLEAN:
+                            type = "boolean";
+                            cast = "java.lang.Boolean";
+                            call = "booleanValue()";
+                            break;
+                        case BYTE:
+                            type = "byte";
+                            cast = "java.lang.Number";
+                            call = "byteValue";
+                            break;
+                        case SHORT:
+                            type = "short";
+                            cast = "java.lang.Number";
+                            call = "shortValue";
+                            break;
+                        case INT:
+                            type = "int";
+                            cast = "java.lang.Number";
+                            call = "intValue";
+                            break;
+                        case LONG:
+                            type = "long";
+                            cast = "java.lang.Number";
+                            call = "longValue";
+                            break;
+                        case FLOAT:
+                            type = "float";
+                            cast = "java.lang.Number";
+                            call = "floatValue";
+                            break;
+                        case DOUBLE:
+                            type = "double";
+                            cast = "java.lang.Number";
+                            call = "doubleValue";
+                            break;
+                        case CHAR:
+                            type = "char";
+                            cast = "java.lang.Character";
+                            call = "charValue";
+                            break;
+                        default:
+                            throw new IllegalStateException("Unknown type: " + elem);
+                    }
+                    convert.append("      java.lang.Object[] orig = (java.lang.Object[])arg").append(cnt).append(";\n");
+                    convert.append("      ").append(type).append("[] copy = new ").append(type).append("[orig.length];");
+                    convert.append("      for (int i = 0; i < orig.length; i++) {\n");
+                    convert.append("        copy[i] = ((").append(cast).append(")orig[i]).").append(call).append("();\n");
+                    convert.append("      }\n");
+                    convert.append("      arg").append(cnt).append(" = copy;\n");
+                }
                 convert.append("    }\n");
             } else {
                 source.append(t);

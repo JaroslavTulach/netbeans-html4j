@@ -80,7 +80,8 @@ public class JsMethods {
 
     @JavaScriptBody(args = {"r"}, javacall = true, body =
         "var array = new Array();\n"
-      + "array[0]=1; array[1]=2;\n"
+      + "array[0]=1.2;\n"
+      + "array[1]=2.3;\n"
       + "return r.@org.netbeans.html.boot.impl.Arithm::sumArr([Ljava/lang/Object;)(array);\n"
     )
     private static native int sumArr(Arithm r);
