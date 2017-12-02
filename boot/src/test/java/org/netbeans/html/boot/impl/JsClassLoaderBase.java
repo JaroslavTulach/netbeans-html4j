@@ -283,4 +283,11 @@ public class JsClassLoaderBase {
         assertEquals(res4, true, "The right value");
     }
 
+   @Test public void toBooleanArr() throws Throwable {
+        Method st = methodClass.getMethod("toBooleanArr", boolean.class, boolean.class);
+        boolean[] res = (boolean[]) st.invoke(null, false, true);
+        assertFalse(res[0], "false first");
+        assertFalse(res[1], "true second");
+    }
+
 }

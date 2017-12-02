@@ -102,6 +102,14 @@ public class JsMethods {
     )
     private static native boolean any(Arithm r, boolean a, boolean b);
 
+    @JavaScriptBody(args = { "a", "b" }, body =
+        "var array = new Array();\n"
+      + "array[0] = a;\n"
+      + "array[1] = b;\n"
+      + "return array;\n"
+    )
+    public static native boolean[] toBooleanArr(boolean a, boolean b);
+
     public static boolean any(boolean a, boolean b) {
         return any(new Arithm(), a, b);
     }
