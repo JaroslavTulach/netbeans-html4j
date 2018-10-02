@@ -18,20 +18,39 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
-                <configuration>
-                    <mainClass>${main.class}</mainClass>
-                </configuration>
                 <executions>
                     <execution>
-                        <id>native-image</id>
-                        <phase>verify</phase>
+                        <id>test</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <mainClass>${main.class}</mainClass>
+                            <arguments>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-binary</id>
+                        <phase>package</phase>
                         <configuration>
                             <executable>${native.image}</executable>
                             <arguments>
-                                <argument>-Djava.library.path=target/lib</argument>
+                                <argument>-H:Path=${project.build.directory}</argument>
+                                <argument>-H:Name=jsonparse</argument>
+                                <argument>-H:+ReportUnsupportedElementsAtRuntime</argument>
+                                <argument>--enable-url-protocols=https</argument>
                                 <argument>-classpath</argument>
                                 <classpath />
                                 <argument>${main.class}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>test-binary</id>
+                        <phase>verify</phase>
+                        <configuration>
+                            <executable>${project.build.directory}/jsonparse</executable>
+                            <arguments>
+                                <argument>-Djava.library.path=${java.home}/lib/amd64/</argument>
                             </arguments>
                         </configuration>
                     </execution>
@@ -41,34 +60,8 @@
     </build>
     <profiles>
         <profile>
-            <id>substratevm</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.6.0</version>
-                        <configuration>
-                            <executable>${native.image}</executable>
-                            <arguments>
-                                <argument>-H:Path=${project.build.directory}</argument>
-                                <argument>-H:Name=jsonparse</argument>
-                                <argument>-H:+ReportUnsupportedElementsAtRuntime</argument>
-                                <argument>-classpath</argument>
-                                <classpath />
-                                <argument>${main.class}</argument>
-                            </arguments>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
             <id>check-graalvm</id>
             <activation>
-                <property>
-                    <name>!native.image</name>
-                </property>
                 <file>
                     <missing>${java.home}/bin/native-image</missing>
                 </file>
@@ -78,7 +71,7 @@
                     <plugin>
                         <groupId>org.apidesign.bck2brwsr</groupId>
                         <artifactId>bck2brwsr-maven-plugin</artifactId>
-                        <version>0.21</version>
+                        <version>0.23</version>
                         <executions>
                             <execution>
                                 <id>install-graalvm</id>
@@ -87,8 +80,7 @@
                                     <goal>show</goal>
                                 </goals>
                                 <configuration>
-                                    <directory>docs</directory>
-                                    <startpage>README.html</startpage>
+                                    <startpage>https://github.com/JaroslavTulach/incubator-netbeans-html4j/blob/examples/examples/jsonparse/README.md</startpage>
                                 </configuration>
                             </execution>
                         </executions>

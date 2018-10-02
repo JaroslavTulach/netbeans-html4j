@@ -1,11 +1,12 @@
 # Type-safe Parsing of JSON without any Reflection
 
 This example demonstrates the power of ahead-of-time compilation of Java
-into a native binary (done by [GraalVM](http://www.oracle.com/technetwork/oracle-labs/program-languages/overview/)'s
-`native-image` command) and shows how to bind this together with
-parsing of JSON documents.
+into a native binary (assembled by [GraalVM](http://www.graalvm.org/) RC6)
+and shows how to wire everything together to parse JSON documents.
 
-SubstrateVM (the VM behind `native-image`) has certain limitations. One of them
+[GraalVM](http://www.graalvm.org/) provides tool called `native-image` that
+compiles Java bytecode to native executable. However, the tool isn't fully
+featured implementation of Java. It has several limitations. One of them
 is limited support for reflection. Finding a type-safe JSON parser in Java
 that doesn't need reflection isn't easy. Luckily there is one: the
 [Apache @net.java.html.json.Model annotation](https://github.com/apache/incubator-netbeans-html4j)
@@ -18,17 +19,17 @@ To try this example, check it out first and go into the appropriate directory:
 $ git clone https://github.com/jaroslavtulach/incubator-netbeans-html4j/ -b examples
 $ cd incubator-netbeans-html4j/examples/jsonparse/
 ```
-Now you are ready to run the code:
+Now you are ready to run the code.
+However, rather than using regular JDK8 (that doesn't support `native-image` command),
+it is recommended to download and set [GraalVM](http://www.graalvm.org/) up:
 ```bash
-$ mvn package exec:java
+$ mvn -q package exec:java@test
 ```
-However, rather than regular using JDK8 (that doesn't support `native-image` command), 
-it is recommended to download set [GraalVM](http://www.oracle.com/technetwork/oracle-labs/program-languages/overview/)
-up. If you execute the above command on a regular JDK a browser with instructions
-to download [GraalVM](http://www.oracle.com/technetwork/oracle-labs/program-languages/overview/)
-is opened. After downloading you can re-run the command as:
+If you execute the above command on a regular JDK a browser with instructions
+to download [GraalVM](http://www.graalvm.org/) is opened. After
+downloading you can re-run the command as:
 ```bash
-$ JAVA_HOME=/path/graalvm mvn package exec:java 
+$ JAVA_HOME=/path/graalvm mvn -q package exec:java@test
 ```
 The sample program connects to GitHub API and prints informations obtained from
 the parsing of the result.
@@ -73,27 +74,41 @@ way.
 Now it is time to go native and compile your sample Java application into
 native binary. Just execute:
 ```bash
-$ JAVA_HOME=~/bin/graalvm mvn -Psubstratevm package exec:exec
-   classlist:   2,797.40 ms
-       (cap):     957.45 ms
-       setup:   2,000.45 ms
-  (typeflow):   6,062.05 ms
-   (objects):   1,533.18 ms
-  (features):       1.71 ms
-    analysis:   7,808.20 ms
-    universe:     381.46 ms
-     (parse):   1,576.88 ms
-    (inline):   1,464.84 ms
-   (compile):  15,992.62 ms
-     compile:  19,494.88 ms
-       image:     993.15 ms
-       write:     403.05 ms
-     [total]:  33,981.06 ms
+$ JAVA_HOME=/pathto/graalvm mvn -q package exec:exec@generate-binary
+Build on Server(pid: 1234, port: 42437)
+[jsonparse:1234]    classlist:   1,277.11 ms
+[jsonparse:1234]        (cap):   1,638.03 ms
+[jsonparse:1234]        setup:   4,385.15 ms
+[jsonparse:1234]   (typeflow):  17,787.02 ms
+[jsonparse:1234]    (objects):  10,596.14 ms
+[jsonparse:1234]   (features):     464.39 ms
+[jsonparse:1234]     analysis:  29,278.01 ms
+[jsonparse:1234]     universe:   1,192.72 ms
+[jsonparse:1234]      (parse):   4,669.14 ms
+[jsonparse:1234]     (inline):   4,771.81 ms
+[jsonparse:1234]    (compile):  48,711.44 ms
+[jsonparse:1234]      compile:  59,436.80 ms
+[jsonparse:1234]        image:   3,152.13 ms
+[jsonparse:1234]        write:     502.66 ms
+[jsonparse:1234]      [total]:  99,387.28 ms
 ```
-In less than a minute a fully optimized native binary representing your Java
+In less than two minutes a fully optimized native binary representing your Java
 application has been prepared for you. It contains a JSON parser and can be
-tested by consuming the input and extracting the results. Try:
+tested via Maven or invoked directly:
 ```bash
+$ mvn -q exec:exec@test-binary
+there is 8 repositories
+repository hol-sse-websocket is owned by jersey
+repository jersey is owned by jersey
+repository jersey-1.x is owned by jersey
+repository jersey-1.x-old is owned by jersey
+repository jersey-integration-patches is owned by jersey
+repository jersey-old is owned by jersey
+repository jersey-web is owned by jersey
+repository jersey.github.io is owned by jersey
+#
+# or invoked directly:
+#
 $ curl https://api.github.com/users/jersey/repos | ./target/jsonparse -
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
