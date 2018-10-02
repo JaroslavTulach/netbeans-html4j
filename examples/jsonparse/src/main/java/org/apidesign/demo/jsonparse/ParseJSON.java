@@ -45,10 +45,10 @@ public final class ParseJSON {
         URL url;
         if (args.length == 0) {
             try {
-                url = new URL("https://api.github.com/users/jersey/repos");
+                url = new URL("https://api.github.com/users/graalvm/repos");
             } catch (Error t) {
                 System.err.println("Unsupported https scheme (" + t.getMessage() + "), Try parsing from stdin:");
-                System.err.println("$ curl https://api.github.com/users/jersey/repos | ./target/jsonparse -");
+                System.err.println("$ curl https://api.github.com/users/graalvm/repos | ./target/jsonparse -");
                 System.exit(1);
                 throw t;
             }

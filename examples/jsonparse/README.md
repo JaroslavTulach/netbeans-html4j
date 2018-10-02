@@ -30,15 +30,22 @@ to download [GraalVM](http://www.graalvm.org/) is opened. After
 downloading you can re-run the command as:
 ```bash
 $ JAVA_HOME=/path/graalvm mvn -q package exec:java@test
-there is 8 repositories
-repository hol-sse-websocket is owned by jersey
-repository jersey is owned by jersey
-repository jersey-1.x is owned by jersey
-repository jersey-1.x-old is owned by jersey
-repository jersey-integration-patches is owned by jersey
-repository jersey-old is owned by jersey
-repository jersey-web is owned by jersey
-repository jersey.github.io is owned by jersey
+there is 14 repositories
+repository examples is owned by graalvm
+repository graal-js-archetype is owned by graalvm
+repository graal-jvmci-8 is owned by graalvm
+repository graaljs is owned by graalvm
+repository graalpython is owned by graalvm
+repository graalvm-demos is owned by graalvm
+repository graalvm.github.io is owned by graalvm
+repository mx is owned by graalvm
+repository mysql-mle-demos is owned by graalvm
+repository openjdk8-jvmci-builder is owned by graalvm
+repository retext is owned by graalvm
+repository scaladays2018-demos is owned by graalvm
+repository simplelanguage is owned by graalvm
+repository sulong is owned by graalvm
+
 ```
 The sample program connects to GitHub API and prints information obtained from
 the received document via the `@Model` based parser.
@@ -106,31 +113,43 @@ application has been prepared for you. It contains a JSON parser and can be
 tested via Maven or invoked directly:
 ```bash
 $ mvn -q exec:exec@test-binary
-there is 8 repositories
-repository hol-sse-websocket is owned by jersey
-repository jersey is owned by jersey
-repository jersey-1.x is owned by jersey
-repository jersey-1.x-old is owned by jersey
-repository jersey-integration-patches is owned by jersey
-repository jersey-old is owned by jersey
-repository jersey-web is owned by jersey
-repository jersey.github.io is owned by jersey
+there is 14 repositories
+repository examples is owned by graalvm
+repository graal-js-archetype is owned by graalvm
+repository graal-jvmci-8 is owned by graalvm
+repository graaljs is owned by graalvm
+repository graalpython is owned by graalvm
+repository graalvm-demos is owned by graalvm
+repository graalvm.github.io is owned by graalvm
+repository mx is owned by graalvm
+repository mysql-mle-demos is owned by graalvm
+repository openjdk8-jvmci-builder is owned by graalvm
+repository retext is owned by graalvm
+repository scaladays2018-demos is owned by graalvm
+repository simplelanguage is owned by graalvm
+repository sulong is owned by graalvm
 #
 # or invoked directly:
 #
-$ curl https://api.github.com/users/jersey/repos | ./target/jsonparse -
+$ curl https://api.github.com/users/graalvm/repos | ./target/jsonparse -
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100 43041  100 43041    0     0  31925      0  0:00:01  0:00:01 --:--:-- 31929
-there is 8 repositories
-repository hol-sse-websocket is owned by jersey
-repository jersey is owned by jersey
-repository jersey-1.x is owned by jersey
-repository jersey-1.x-old is owned by jersey
-repository jersey-integration-patches is owned by jersey
-repository jersey-old is owned by jersey
-repository jersey-web is owned by jersey
-repository jersey.github.io is owned by jersey
+there is 14 repositories
+repository examples is owned by graalvm
+repository graal-js-archetype is owned by graalvm
+repository graal-jvmci-8 is owned by graalvm
+repository graaljs is owned by graalvm
+repository graalpython is owned by graalvm
+repository graalvm-demos is owned by graalvm
+repository graalvm.github.io is owned by graalvm
+repository mx is owned by graalvm
+repository mysql-mle-demos is owned by graalvm
+repository openjdk8-jvmci-builder is owned by graalvm
+repository retext is owned by graalvm
+repository scaladays2018-demos is owned by graalvm
+repository simplelanguage is owned by graalvm
+repository sulong is owned by graalvm
 ```
 
 Your Java code has just gone native. Together with a reflection less JSON
