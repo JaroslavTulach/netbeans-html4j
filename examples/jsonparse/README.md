@@ -30,14 +30,23 @@ to download [GraalVM](http://www.graalvm.org/) is opened. After
 downloading you can re-run the command as:
 ```bash
 $ JAVA_HOME=/path/graalvm mvn -q package exec:java@test
+there is 8 repositories
+repository hol-sse-websocket is owned by jersey
+repository jersey is owned by jersey
+repository jersey-1.x is owned by jersey
+repository jersey-1.x-old is owned by jersey
+repository jersey-integration-patches is owned by jersey
+repository jersey-old is owned by jersey
+repository jersey-web is owned by jersey
+repository jersey.github.io is owned by jersey
 ```
-The sample program connects to GitHub API and prints informations obtained from
-the parsing of the result.
+The sample program connects to GitHub API and prints information obtained from
+the received document via the `@Model` based parser.
 
 ## How does this work?
 
 The parsing code is in a single class [ParseJSON](https://github.com/JaroslavTulach/incubator-netbeans-html4j/blob/examples/examples/jsonparse/src/main/java/org/apidesign/demo/jsonparse/ParseJSON.java).
-First of all it defines (potentially simplified) structure of the JSON document:
+First of all it defines (potentially simplified) structure of the JSON document
 ```java
 @Model(className="RepositoryInfo", properties = {
     @Property(name = "id", type = int.class),
@@ -54,7 +63,7 @@ final class RepositoryCntrl {
 }
 ```
 and then it uses the generated `RepositoryInfo` and `Owner` classes to parse
-the provide input stream and pick certain information up while doing that:
+the provided input stream and pick the important information up while doing that:
 ```java
 List<RepositoryInfo> repositories = new ArrayList<>();
 try (InputStream is = initializeStream(args)) {
@@ -69,9 +78,9 @@ repositories.stream().filter((repo) -> repo != null && repo.getOwner() != null).
 Few lines of code and all the information is ready in your hands in a type-safe
 way.
 
-## Going **Native**!
+## Going Native!
 
-Now it is time to go native and compile your sample Java application into
+Now it is the time to go native and compile your sample Java application into
 native binary. Just execute:
 ```bash
 $ JAVA_HOME=/pathto/graalvm mvn -q package exec:exec@generate-binary
@@ -125,4 +134,4 @@ repository jersey.github.io is owned by jersey
 ```
 
 Your Java code has just gone native. Together with a reflection less JSON
-parser.
+parser ready to parse your documents in a type-safe way.
