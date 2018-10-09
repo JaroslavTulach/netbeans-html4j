@@ -22,6 +22,9 @@
                     <execution>
                         <id>test</id>
                         <phase>package</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
                         <configuration>
                             <mainClass>${main.class}</mainClass>
                             <arguments>
@@ -31,6 +34,9 @@
                     <execution>
                         <id>generate-binary</id>
                         <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
                         <configuration>
                             <executable>${native.image}</executable>
                             <arguments>
@@ -46,6 +52,9 @@
                     </execution>
                     <execution>
                         <id>test-binary</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
                         <phase>verify</phase>
                         <configuration>
                             <executable>${project.build.directory}/jsonparse</executable>
