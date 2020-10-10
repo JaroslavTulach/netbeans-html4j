@@ -35,9 +35,9 @@ public final class ParseJSON {
             Models.parse(CONTEXT, RepositoryInfo.class, is, repositories);
         }
         
-        System.err.println("there is " + repositories.size() + " repositories");
+        System.out.println("there is " + repositories.size() + " repositories");
         repositories.stream().filter((repo) -> repo != null && repo.getOwner() != null).forEach((repo) -> {
-            System.err.println("repository " + repo.getName() + " is owned by " + repo.getOwner().getLogin());
+            System.out.println("repository " + repo.getName() + " is owned by " + repo.getOwner().getLogin());
         });
     }
 
@@ -54,11 +54,13 @@ public final class ParseJSON {
             }
         } else {
             if ("-".equals(args[0])) {
+                System.err.println("processing stdin");
                 return System.in;
             } else {
                 url = new URL(args[0]);
             }
         }
+        System.err.println("processing " + url);
         return url.openStream();
     }
 
